@@ -79,6 +79,11 @@ public class EE {
         return this.cardinal;
     }
 
+    public int getValue(int i)
+    {
+        return this.ensTab[i];
+    }
+
     private int contientPratique(int var1) {
         int var2;
         for (var2 = 0; var2 < this.cardinal && this.ensTab[var2] != var1; ++var2) {

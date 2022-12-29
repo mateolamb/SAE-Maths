@@ -12,7 +12,8 @@ public class MainRelationBinaire {
                  (réflexive, ..., relation d'ordre) et les relations binaires suivantes obtenues à partir de Ri :
                 Hasse, fermeture transitive de Hasse et fermeture transitive de Hasse avec boucles (sous 2 formes aussi)
     */
-    public static void main(String[] args){
+    public static void main(String[] args)
+    {
 	
     }
 
