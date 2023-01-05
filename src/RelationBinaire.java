@@ -72,7 +72,25 @@ public class RelationBinaire {
      * '=' si egal a la valeur vrai et '<=' sinon
      */
     public RelationBinaire(int nb, boolean egal) {
-        this(nb, (egal) ? 1 : Math.random()); //Math random choisie [0;1[ (donc de 0 à 0.9)
+        this(nb);
+        for(int i = 0; i < nb; i++)
+        {
+            for(int j = 0; j < nb; j++)
+            {
+                if(egal && i == j)
+                {
+                    this.matAdj[i][j] = true;
+                    this.tabSucc[i].ajoutPratique(i);
+                    this.m++;
+                }
+                else if(i <= j && !egal)
+                {
+                    this.matAdj[i][j] = true;
+                    this.tabSucc[i].ajoutPratique(j);
+                    this.m++;
+                }
+            }
+        }
     }
 
     //______________________________________________
@@ -91,6 +109,7 @@ public class RelationBinaire {
                 if (mat[i][j] != 0) //Test pour savoir si il y a une liaison
                 {
                     this.matAdj[i][j] = true;
+                    this.tabSucc[i].ajoutPratique(j);
                     this.m++;
                 }
             }
@@ -114,6 +133,7 @@ public class RelationBinaire {
                 if (tab[i].getValue(j) == 0) //Test pour savoir si il y a une liaison
                 {
                     this.tabSucc[i].ajoutPratique(tab[i].getValue(j));
+                    this.matAdj[i][j] = true;
                     this.m++;
                 }
             }
@@ -174,7 +194,6 @@ public class RelationBinaire {
 
     {
         throw new RuntimeException("La fonction n'est pas encore implémentée !");
-
     }
 
     //______________________________________________
@@ -183,8 +202,9 @@ public class RelationBinaire {
     /** pré-requis : m1 et m2 sont des matrices carrées de même dimension
      résultat : le produit matriciel de m1 et m2
      */
-    public static boolean[][] produit(boolean[][] m1, boolean[][] m2){
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+    public static boolean[][] produit(boolean[][] m1, boolean[][] m2)
+    {
+        return opBool(m1,m2, 2);
     }
 
     //______________________________________________
@@ -207,8 +227,9 @@ public class RelationBinaire {
     /** pré-requis : aucun
      résultat : vrai ssi this est vide
      */
-    public boolean estVide(){
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+    public boolean estVide()
+    {
+        return this.m == 0;
     }
 
     //______________________________________________
