@@ -197,7 +197,57 @@ public class RelationBinaire {
      */
 
     public static boolean[][] opBool(boolean[][] m1, boolean[][] m2, int numConnecteur) {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+        boolean[][] res= new boolean[m1.length][m1.length];
+        if(numConnecteur==1){
+            for (int i = 0; i < m1.length; i++) {
+                for (int j = 0; j < m1.length; j++) {
+                    if(m1[i][j] || m2[i][j]){
+                        res[i][j]=true;
+                    }
+                }
+            }
+        }
+        if(numConnecteur==2){
+            for (int i = 0; i < m1.length; i++) {
+                for (int j = 0; j < m1.length; j++) {
+                    if(m1[i][j] && m2[i][j]){
+                        res[i][j]=true;
+                    }
+                }
+            }
+        }
+        if(numConnecteur==3){
+            for (int i = 0; i < m1.length; i++) {
+                for (int j = 0; j < m1.length; j++) {
+                    if(m1[i][j]){
+                        res[i][j]=false;
+                    }
+                    else {
+                        res[i][j]=true;
+                    }
+                }
+            }
+        }
+        if(numConnecteur==4){
+            for (int i = 0; i < m1.length; i++) {
+                for (int j = 0; j < m1.length; j++) {
+                    res[i][j]=true;
+                    if(m1[i][j] && !m2[i][j]){
+                        res[i][j]=false;
+                    }
+                }
+            }
+        }
+        if(numConnecteur==5){
+            for (int i = 0; i < m1.length; i++) {
+                for (int j = 0; j < m1.length; j++) {
+                    if((m1[i][j] && m2[i][j]) ||(!m1[i][j] && !m2[i][j])){
+                        res[i][j]=true;
+                    }
+                }
+            }
+        }
+        return res;
     }
 
     //______________________________________________
