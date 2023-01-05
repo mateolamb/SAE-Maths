@@ -270,7 +270,13 @@ public class RelationBinaire {
      * résultat : la matrice transposée de m
      */
     public static boolean[][] transposee(boolean[][] m) {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+        boolean[][] res = new boolean[m.length][m.length];
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m.length; j++) {
+                res[j][i]=m[i][j];
+            }
+        }
+        return res;
     }
 
     //______________________________________________
@@ -325,6 +331,7 @@ public class RelationBinaire {
         {
             this.matAdj[x][y] = true;
             this.tabSucc[x].ajoutPratique(y);
+            this.m++;
         }
     }
 
@@ -361,7 +368,15 @@ public class RelationBinaire {
      * //DERNIERE MODIF
      */
     public RelationBinaire sansBoucles() {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+        RelationBinaire r = new RelationBinaire(this);
+        for (int i = 0; i < matAdj.length; i++) {
+            if (matAdj[i][i]){
+                r.matAdj[i][i]=false;
+                r.tabSucc[i].retraitElt(i);
+                r.m--;
+            }
+        }
+        return r;
     }
 
     //______________________________________________
@@ -383,7 +398,17 @@ public class RelationBinaire {
      * résultat : l'intersection de this et r
      */
     public RelationBinaire intersection(RelationBinaire r) {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+        RelationBinaire r2 = new RelationBinaire(this.n);
+        r2.matAdj = opBool(matAdj,r.matAdj,2);
+        for (int i = 0; i < r2.matAdj.length; i++) {
+            for (int j = 0; j < r2.matAdj.length; j++) {
+                if(r2.matAdj[i][j]){
+                    r2.tabSucc[i].ajoutElt(j);
+                    r2.m++;
+                }
+            }
+        }
+        return r2;
     }
 
     //______________________________________________
