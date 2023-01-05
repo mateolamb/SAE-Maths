@@ -295,8 +295,9 @@ public class RelationBinaire {
      * pré-requis : aucun
      * résultat : vrai ssi this est pleinee (contient tous les couples d'éléments de E)
      */
-    public boolean estPleine() {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+    public boolean estPleine()
+    {
+        return this.n * this.n == this.m;
     }
 
     //______________________________________________
@@ -305,8 +306,9 @@ public class RelationBinaire {
      * pré-requis : aucun
      * résultat : vrai ssi (x,y) appartient à this
      */
-    public boolean appartient(int x, int y) {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+    public boolean appartient(int x, int y)
+    {
+        return matAdj[x][y];
     }
 
     //______________________________________________
@@ -316,8 +318,14 @@ public class RelationBinaire {
      * pré-requis : 0 <= x < this.n et 0 <= y < this.n
      * résultat : ajoute (x,y) à this s'il n'y est pas déjà
      */
-    public void ajouteCouple(int x, int y) {
-
+    public void ajouteCouple(int x, int y)
+    {
+        if(this.matAdj[x][y]) System.out.println("Le couple existe déjà");
+        else
+        {
+            this.matAdj[x][y] = true;
+            this.tabSucc[x].ajoutPratique(y);
+        }
     }
 
     //______________________________________________
