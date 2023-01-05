@@ -342,8 +342,14 @@ public class RelationBinaire {
      * pré-requis : 0 <= x < this.n et 0 <= y < this.n
      * résultat : enlève (x,y) de this s'il y est
      */
-    public void enleveCouple(int x, int y) {
-
+    public void enleveCouple(int x, int y)
+    {
+        if (!this.matAdj[x][y]) System.out.println("Couple inexistant");
+        else
+        {
+            this.matAdj[x][y] = false;
+            this.tabSucc[x].retraitElt(y);
+        }
     }
 
     //______________________________________________
@@ -354,9 +360,19 @@ public class RelationBinaire {
      * résultat : une nouvelle relation binaire obtenue à partir de this en ajoutant
      * les couples de la forme  (x,x) qui n'y sont pas déjà
      */
-    public RelationBinaire avecBoucles() {
-
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+    public RelationBinaire avecBoucles()
+    {
+        RelationBinaire r = new RelationBinaire(this);
+        for(int i = 0; i < r.matAdj.length; i++)
+        {
+            if(!r.matAdj[i][i])
+            {
+                r.matAdj[i][i] = true;
+                r.tabSucc[i].ajoutPratique(i);
+                r.m++;
+            }
+        }
+        return r;
     }
     //______________________________________________
 
@@ -386,8 +402,21 @@ public class RelationBinaire {
      * pré-requis : this.n = r.n
      * résultat : l'union de this et r
      */
-    public RelationBinaire union(RelationBinaire r) {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+    public RelationBinaire union(RelationBinaire r)
+    {
+        RelationBinaire res = new RelationBinaire(r.n);
+        res.matAdj = opBool(this.matAdj, r.matAdj,1);
+        for(int i = 0; i < r.matAdj.length; i++)
+        {
+            for(int j = 0; j < r.matAdj[i].length; j++) {
+                if (res.matAdj[i][j])
+                {
+                    res.tabSucc[i].ajoutPratique(j);
+                    res.m++;
+                }
+            }
+        }
+        return res;
     }
 
     //______________________________________________
