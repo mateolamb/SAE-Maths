@@ -1,4 +1,3 @@
-import java.util.*;
 import java.lang.*;
 
 public class RelationBinaire {
@@ -96,12 +95,12 @@ public class RelationBinaire {
      * action : construit une relation binaire dont la matrice d'adjacence
      * est une copie de mat
      */
-    public RelationBinaire(int[][] mat) {
+    public RelationBinaire(boolean[][] mat) {
         this(mat.length);
 
         for (int i = 0; i < mat.length; i++) {
             for (int j = 0; j < mat[i].length; j++) {
-                if (mat[i][j] != 0) //Test pour savoir si il y a une liaison
+                if (mat[i][j]) //Test pour savoir si il y a une liaison
                 {
                     this.matAdj[i][j] = true;
                     this.tabSucc[i].ajoutPratique(j);
@@ -384,15 +383,13 @@ public class RelationBinaire {
      * //DERNIERE MODIF
      */
     public RelationBinaire sansBoucles() {
-        RelationBinaire r = new RelationBinaire(this);
+        boolean[][] b = new  boolean[matAdj.length][matAdj.length];
         for (int i = 0; i < matAdj.length; i++) {
             if (matAdj[i][i]){
-                r.matAdj[i][i]=false;
-                r.tabSucc[i].retraitElt(i);
-                r.m--;
+                b[i][i]=false;
             }
         }
-        return r;
+        return new RelationBinaire(b);
     }
 
     //______________________________________________
@@ -404,19 +401,9 @@ public class RelationBinaire {
      */
     public RelationBinaire union(RelationBinaire r)
     {
-        RelationBinaire res = new RelationBinaire(r.n);
-        res.matAdj = opBool(this.matAdj, r.matAdj,1);
-        for(int i = 0; i < r.matAdj.length; i++)
-        {
-            for(int j = 0; j < r.matAdj[i].length; j++) {
-                if (res.matAdj[i][j])
-                {
-                    res.tabSucc[i].ajoutPratique(j);
-                    res.m++;
-                }
-            }
-        }
-        return res;
+        boolean[][] b = opBool(this.matAdj, r.matAdj,1);
+
+        return new RelationBinaire(b);
     }
 
     //______________________________________________
@@ -427,17 +414,8 @@ public class RelationBinaire {
      * résultat : l'intersection de this et r
      */
     public RelationBinaire intersection(RelationBinaire r) {
-        RelationBinaire r2 = new RelationBinaire(this.n);
-        r2.matAdj = opBool(matAdj,r.matAdj,2);
-        for (int i = 0; i < r2.matAdj.length; i++) {
-            for (int j = 0; j < r2.matAdj.length; j++) {
-                if(r2.matAdj[i][j]){
-                    r2.tabSucc[i].ajoutElt(j);
-                    r2.m++;
-                }
-            }
-        }
-        return r2;
+        boolean[][] b = opBool(matAdj,r.matAdj,2);
+        return new RelationBinaire(b);
     }
 
     //______________________________________________
@@ -448,7 +426,8 @@ public class RelationBinaire {
      * résultat : la relation complémentaire de this
      */
     public RelationBinaire complementaire() {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+        boolean[][] b = opBool(matAdj,matAdj,3);
+        return new RelationBinaire(b);
     }
 
     //______________________________________________
