@@ -437,9 +437,10 @@ public class RelationBinaire {
      * pré-requis : this.n = r.n
      * résultat : la différence de this et r
      */
-    public RelationBinaire difference(RelationBinaire r) {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
-
+    public RelationBinaire difference(RelationBinaire r)
+    {
+        boolean[][] b = opBool(matAdj,r.matAdj,4);
+        return new RelationBinaire(b);
     }
 
     //______________________________________________
@@ -449,8 +450,14 @@ public class RelationBinaire {
      * pré-requis : this.n = r.n
      * résultat : vrai ssi this est incluse dans r
      */
-    public boolean estIncluse(RelationBinaire r) {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+    public boolean estIncluse(RelationBinaire r)
+    {
+        for (int i = 0; i < this.n; i++) {
+            for (int j = 0; j < this.n; j++) {
+                if(this.matAdj[i][j] && this.matAdj[i][j] != r.matAdj[i][j]) return false;
+            }
+        }
+        return true;
     }
 
     //______________________________________________
@@ -460,8 +467,14 @@ public class RelationBinaire {
      * pré-requis : this.n = r.n
      * résultat : vrai ssi this est égale à r
      */
-    public boolean estEgale(RelationBinaire r) {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+    public boolean estEgale(RelationBinaire r)
+    {
+        for (int i = 0; i < this.n; i++) {
+            for (int j = 0; j < this.n; j++) {
+                if(this.matAdj[i][j] != r.matAdj[i][j]) return false;
+            }
+        }
+        return true;
     }
 
     //______________________________________________
@@ -475,8 +488,9 @@ public class RelationBinaire {
      * résultat : l'ensemble des successeurs de x dans this, "indépendant"
      * (c'est-à-dire dans une autre zône mémoire) de l'attribut this.tabSucc
      */
-    public EE succ(int x) {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+    public EE succ(int x)
+    {
+        return new EE(this.tabSucc[x]);
     }
 
     //______________________________________________
@@ -486,8 +500,16 @@ public class RelationBinaire {
      * pré-requis : 0 <= x < this.n
      * résultat : l'ensemble des prédécesseurs de x dans this
      */
-    public EE pred(int x) {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+    public EE pred(int x)
+    {
+        EE predecesseur = new EE(this.n);
+        for (int i = 0; i < this.tabSucc.length; i++)
+        {
+            for (int j = 0; j < this.tabSucc[i].getCardinal(); j++) {
+                if(this.tabSucc[i].getValue(j) == x) predecesseur.ajoutElt(i);
+            }
+        }
+        return predecesseur;
     }
 
     //______________________________________________
@@ -500,8 +522,10 @@ public class RelationBinaire {
      * pré-requis : aucun
      * résultat : vrai ssi this est réflexive
      */
-    public boolean estReflexive() {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+    public boolean estReflexive()
+    {
+        RelationBinaire rb = this.avecBoucles();
+        return rb.m == this.m;
     }
 
     //______________________________________________
@@ -511,8 +535,9 @@ public class RelationBinaire {
      * pré-requis : aucun
      * résultat : vrai ssi this est antiréflexive
      */
-    public boolean estAntireflexive() {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+    public boolean estAntireflexive()
+    {
+        return !this.estReflexive();
     }
 
     //______________________________________________
@@ -522,8 +547,15 @@ public class RelationBinaire {
      * pré-requis : aucun
      * résultat : vrai ssi this est symétrique
      */
-    public boolean estSymetrique() {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+    public boolean estSymetrique()
+    {
+        for (int i = 0; i < this.matAdj.length; i++)
+        {
+            for (int j = 0; j < this.matAdj[i].length; j++) {
+                if(this.matAdj[i][j] && !this.matAdj[j][i]) return false;
+            }
+        }
+        return true;
     }
 
     //______________________________________________
@@ -534,7 +566,7 @@ public class RelationBinaire {
      * résultat : vrai ssi this est antisymétrique
      */
     public boolean estAntisymetrique() {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+        return !this.estSymetrique();
     }
 
     //______________________________________________
@@ -544,7 +576,8 @@ public class RelationBinaire {
      * pré-requis : aucun
      * résultat : vrai ssi this est transitive
      */
-    public boolean estTransitive() {
+    public boolean estTransitive()
+    {
         throw new RuntimeException("La fonction n'est pas encore implémentée !");
     }
 
