@@ -125,9 +125,9 @@ public class RelationBinaire {
     public RelationBinaire(EE[] tab) {
         this(tab.length);
 
-        for (int i = 0; i < tab.length; i++) {
+        for (int i = 0; i < tab.length-1; i++) {
             for (int j = 0; j < tab[i].getCardinal(); j++) {
-                if (tab[i].getValue(j) == 0) //Test pour savoir si il y a une liaison
+                if (tab[i].getValue(j) != 0) //Test pour savoir si il y a une liaison
                 {
                     this.tabSucc[i].ajoutPratique(tab[i].getValue(j));
                     this.matAdj[i][j] = true;
