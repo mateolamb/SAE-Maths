@@ -171,15 +171,22 @@ public class RelationBinaire {
      */
     public String toString() {
         String matrice = "";
-        String couples = "";
+        String couples = "Ensemble de couples {";
+        int compteur = 0;
         for (int i = 0; i < matAdj.length; i++) {
             for (int j = 0; j < matAdj.length; j++) {
                 if (matAdj[i][j]) {
                     matrice += "1 ";
-                    couples += "(" + i + "," + j + "),";
+                    couples += "(" + i + "," + j + ")";
+                    if(this.m-1 == compteur);
+                    else couples += ", ";
+                    compteur++;
                 }
+                else matrice += "0 ";
             }
+            matrice += "\n";
         }
+        couples += "}";
         return matrice + "\n" + couples;
     }
 
