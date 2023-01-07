@@ -622,6 +622,16 @@ public class RelationBinaire {
      */
     public void afficheDivers() {
         int[][] copie = new int[this.n][this.n];
+        System.out.println(this.toString());
+        String str = "";
+        if(this.estAntireflexive()) str += "Antireflexive ";
+        else str += "Reflexive ";
+        if(this.estAntisymetrique()) str += "Antisymetrique ";
+        else str += "Symetrique ";
+        if(estTransitive()) str += "Transitive ";
+        System.out.println(str+"\n");
+        System.out.println(this.hasse().toString()+"\n");
+        System.out.println(this.ferTrans().toString());
     }
 
     //______________________________________________
