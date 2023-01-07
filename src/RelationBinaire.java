@@ -614,7 +614,7 @@ public class RelationBinaire {
             for (int j = 0; j < succ.getCardinal(); j++) {
                 succ2=this.succ(succ.getValue(j));
                 for (int k = 0; k < succ2.getCardinal(); k++) {
-                    if(!succ.contient(succ2.getValue(k))){
+                    if(succ.contient(succ2.getValue(k))){
                         succ.retraitElt(succ2.getValue(k));
                     }
                 }
@@ -632,7 +632,23 @@ public class RelationBinaire {
      * résultat : la fermeture transitive de this
      */
     public RelationBinaire ferTrans() {
-        throw new RuntimeException("La fonction n'est pas encore implémentée !");
+        EE succ = new EE(this.n);
+        EE succ2 = new EE(this.n);
+        EE[] tab = new  EE[this.n];
+        for (int i = 0; i < tabSucc.length-1; i++) {
+            succ=this.succ(i);
+            for (int j = 0; j < succ.getCardinal(); j++) {
+                succ2=this.succ(succ.getValue(j));
+                for (int k = 0; k < succ2.getCardinal(); k++) {
+                    if(!succ.contient(succ2.getValue(k))){
+                        succ.ajoutElt(succ2.getValue(k));
+                    }
+                }
+
+            }
+            tab[i]=new EE(succ);
+        }
+        return new RelationBinaire(tab);
     }
 
     //______________________________________________
