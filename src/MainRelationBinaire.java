@@ -14,7 +14,7 @@ public class MainRelationBinaire {
     */
     public static void main(String[] args)
     {
-	 boolean[][] mat= {{false,true,true,true},{false,false,true,true},{false,false,false,true},{false,false,false,false}};
+	 boolean[][] mat= {{false,true,true,false},{false,false,true,true},{false,false,false,true},{false,false,false,false}};
      RelationBinaire test = new RelationBinaire(mat);
         System.out.println(test.estTransitive());
     }

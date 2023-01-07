@@ -21,6 +21,9 @@ public class RelationBinaire {
         this.m = 0; //Ensemble vide donc cardinal à 0
         this.matAdj = new boolean[nb][nb]; //Initialise une matrice carrée (valeur par défault 'false')
         this.tabSucc = new EE[nb];
+        for (int i = 0; i < nb; i++) {
+            tabSucc[i] = new EE(nb);
+        }
     }
 
     //______________________________________________
@@ -427,7 +430,14 @@ public class RelationBinaire {
      * résultat : la différence de this et r
      */
     public RelationBinaire difference(RelationBinaire r) {
-        boolean[][] b = opBool(matAdj, r.matAdj, 4);
+        boolean[][] b = new boolean[matAdj.length][matAdj.length];
+        for (int i = 0; i < matAdj.length; i++) {
+            for (int j = 0; j < matAdj.length; j++) {
+               if(matAdj[i][j] && !r.matAdj[i][j]){
+                   b[i][j]= true;
+               }
+            }
+        }
         return new RelationBinaire(b);
     }
 
@@ -563,7 +573,7 @@ public class RelationBinaire {
             for (int j = 0; j < succ.getCardinal(); j++) {
                 succ2=this.succ(succ.getValue(j));
                 for (int k = 0; k < succ2.getCardinal(); k++) {
-                    if(!succ.contient(succ.getValue(k))) return false;
+                    if(!succ.contient(succ2.getValue(k))) return false;
                 }
             }
         }
