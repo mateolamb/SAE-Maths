@@ -148,8 +148,8 @@ public class RelationBinaire {
         this(r.n);
         this.m = r.m;
 
-        for (int i = 0; i < r.m; i++) {
-            for (int j = 0; j < r.m; j++) {
+        for (int i = 0; i < r.n; i++) {
+            for (int j = 0; j < r.n; j++) {
                 this.matAdj[i][j] = r.matAdj[i][j];
                 this.tabSucc[i].ajoutPratique(r.tabSucc[i].getValue(j));
             }
@@ -364,10 +364,10 @@ public class RelationBinaire {
      */
     public RelationBinaire avecBoucles() {
         RelationBinaire r = new RelationBinaire(this);
-        for (int i = 0; i < r.matAdj.length; i++) {
+        for (int i = 0; i < r.n; i++) {
             if (!r.matAdj[i][i]) {
                 r.matAdj[i][i] = true;
-                r.tabSucc[i].ajoutPratique(i);
+                r.tabSucc[i].ajoutElt(i);
                 r.m++;
             }
         }
@@ -535,7 +535,10 @@ public class RelationBinaire {
      * résultat : vrai ssi this est antiréflexive
      */
     public boolean estAntireflexive() {
-        return !this.estReflexive();
+        for (int i = 0; i < this.tabSucc.length; i++) {
+            if(this.tabSucc[i].contient(i)) return false;
+        }
+        return true;
     }
 
     //______________________________________________
@@ -562,7 +565,12 @@ public class RelationBinaire {
      * résultat : vrai ssi this est antisymétrique
      */
     public boolean estAntisymetrique() {
-        return !this.estSymetrique();
+        for (int i = 0; i < this.tabSucc.length; i++) {
+            for (int j = 0; j < this.tabSucc[i].getCardinal(); j++) {
+                if(this.tabSucc[i].contient(j) && this.tabSucc[j].contient(i)) return false;
+            }
+        }
+        return true;
     }
 
     //______________________________________________
@@ -664,13 +672,14 @@ public class RelationBinaire {
         System.out.println(this.toString());
         String str = "";
         if(this.estAntireflexive()) str += "Antireflexive ";
-        else str += "Reflexive ";
+        if(this.estReflexive()) str += "Reflexive ";
         if(this.estAntisymetrique()) str += "Antisymetrique ";
-        else str += "Symetrique ";
+        if(this.estSymetrique()) str += "Symetrique ";
         if(estTransitive()) str += "Transitive ";
+        if(this.estRelOrdre()) str += "Relation d'ordre";
         System.out.println(str+"\n");
-        System.out.println(this.hasse().toString()+"\n");
-        System.out.println(this.ferTrans().toString());
+        System.out.println("Hasse\n"+this.hasse().toString()+"\n");
+        System.out.println("Fermeture transitive\n"+this.ferTrans().toString());
     }
 
     //______________________________________________
