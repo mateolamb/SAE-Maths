@@ -265,9 +265,23 @@ public class RelationBinaire {
      * pré-requis : m1 et m2 sont des matrices carrées de même dimension
      * résultat : le produit matriciel de m1 et m2
      */
-    public static boolean[][] produit(boolean[][] m1, boolean[][] m2) {
+    public static boolean[][] produit(boolean[][] m1, boolean[][] m2)
+    {
+        boolean [][] produit = new boolean[m2[0].length][m1.length];
+        for (int i = 0; i < produit.length; i++) {
+            for (int j = 0; j < produit[i].length; j++) {
+                for (int k = 0; k < produit.length; k++) {
+                    if((m1[i][k] && m2[k][j]))
+                    {
+                        produit[i][j] = true;
+                        break;
+                    }
+                }
+            }
+        }
 
-        return opBool(m1, m2, 2);
+
+        return produit;
     }
 
     //______________________________________________
@@ -523,8 +537,11 @@ public class RelationBinaire {
      * résultat : vrai ssi this est réflexive
      */
     public boolean estReflexive() {
-        RelationBinaire rb = this.avecBoucles();
-        return rb.m == this.m;
+        for (int i = 0; i < this.n; i++)
+        {
+            if(!this.tabSucc[i].contient(i)) return false;
+        }
+        return true;
     }
 
     //______________________________________________
@@ -551,7 +568,10 @@ public class RelationBinaire {
     public boolean estSymetrique() {
         for (int i = 0; i < this.matAdj.length; i++) {
             for (int j = 0; j < this.matAdj[i].length; j++) {
-                if (this.matAdj[i][j] && !this.matAdj[j][i]) return false;
+                if (this.matAdj[i][j])
+                {
+                    if(this.matAdj[j][i] != this.matAdj[i][j]) return false;
+                }
             }
         }
         return true;
@@ -567,10 +587,10 @@ public class RelationBinaire {
     public boolean estAntisymetrique() {
         for (int i = 0; i < this.tabSucc.length; i++) {
             for (int j = 0; j < this.tabSucc[i].getCardinal(); j++) {
-                if(this.tabSucc[i].contient(j) && this.tabSucc[j].contient(i)) return false;
+                if(this.tabSucc[i].contient(j) && !this.tabSucc[j].contient(i)) return true;
             }
         }
-        return true;
+        return false;
     }
 
     //______________________________________________
@@ -603,7 +623,7 @@ public class RelationBinaire {
      * résultat : vrai ssi this est une relation d'ordre
      */
     public boolean estRelOrdre() {
-        return this.estReflexive() && this.estAntisymetrique() && this.estTransitive();
+        return (this.estReflexive() && this.estAntisymetrique() && this.estTransitive());
     }
 
     //______________________________________________

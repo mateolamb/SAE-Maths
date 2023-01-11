@@ -14,9 +14,26 @@ public class MainRelationBinaire {
     */
     public static void main(String[] args)
     {
-         boolean[][] mat= {{false,true,true,false},{false,false,true,true},{false,false,false,true},{false,false,false,false}};
-         RelationBinaire test = new RelationBinaire(mat);
-         test.afficheDivers();
+        boolean[][] m1= {
+                {true,false,true},
+                {false,false,true},
+                {true,true,false}
+        };
+        boolean[][] m2= {
+                {false,false,true},
+                {false,true,true},
+                {true,true,false}
+        };
+
+        boolean[][] m = RelationBinaire.produit(m1,m2);
+         RelationBinaire test = new RelationBinaire(m1);
+        for(int i = 0; i < m1.length; i++)
+        {
+            for (int j = 0; j < m1[i].length; j++) {
+                System.out.print(m[i][j]);
+            }
+            System.out.println();
+        }
 
     }
 
