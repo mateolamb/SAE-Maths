@@ -125,14 +125,11 @@ public class RelationBinaire {
     public RelationBinaire(EE[] tab) {
         this(tab.length);
 
-        for (int i = 0; i < tab.length-1; i++) {
+        for (int i = 0; i < tab.length; i++) {
             for (int j = 0; j < tab[i].getCardinal(); j++) {
-                if (tab[i].getValue(j) != 0) //Test pour savoir si il y a une liaison
-                {
                     this.tabSucc[i].ajoutPratique(tab[i].getValue(j));
-                    this.matAdj[i][j] = true;
+                    this.matAdj[i][tab[i].getValue(j)] = true;
                     this.m++;
-                }
             }
         }
     }
@@ -662,21 +659,32 @@ public class RelationBinaire {
     public RelationBinaire ferTrans() {
         EE succ = new EE(this.n);
         EE succ2 = new EE(this.n);
-        EE[] tab = new  EE[this.n];
-        for (int i = 0; i < tabSucc.length-1; i++) {
-            succ=this.succ(i);
-            for (int j = 0; j < succ.getCardinal(); j++) {
-                succ2=this.succ(succ.getValue(j));
-                for (int k = 0; k < succ2.getCardinal(); k++) {
-                    if(!succ.contient(succ2.getValue(k))){
-                        succ.ajoutElt(succ2.getValue(k));
+        EE succ3= new EE(n);
+        RelationBinaire test = new RelationBinaire(this.matAdj);
+        EE[] tab = test.tabSucc;
+
+        while (!test.estTransitive()){
+
+            for (int i = 0; i < test.tabSucc.length; i++) {
+                succ=test.succ(i);
+                succ3=test.succ(i);
+
+                for (int j = 0; j < succ.getCardinal(); j++) {
+                    succ2=test.succ(succ.getValue(j));
+
+                    for (int k = 0; k < succ2.getCardinal(); k++) {
+                        if(!succ.contient(succ2.getValue(k))){
+                            succ3.ajoutElt(succ2.getValue(k));
+                        }
                     }
+
                 }
+                tab[i]= succ3;
 
             }
-            tab[i]=new EE(succ);
+            test= new RelationBinaire(tab);
         }
-        return new RelationBinaire(tab);
+        return new RelationBinaire(test.matAdj);
     }
 
     //______________________________________________
@@ -713,5 +721,15 @@ public class RelationBinaire {
             nb = Ut.saisirEntier();
         }
         while (nb <= 0);
+
+
+        boolean[][] m1 = {
+                {true, true, false},
+                {false, true, true},
+                {false, false, true}
+        };
+        RelationBinaire r = new RelationBinaire(m1);
+        System.out.println(r.tabSucc);
+        System.out.println(r.ferTrans());
     }
 } // fin RelationBinaire
