@@ -1,4 +1,5 @@
 import java.lang.*;
+import java.util.ArrayList;
 
 public class RelationBinaire {
 
@@ -710,10 +711,36 @@ public class RelationBinaire {
         System.out.println("Fermeture transitive\n"+this.ferTrans().toString());
     }
 
+    public EE descendant (int x)
+    {
+        EE desc = new EE(x);
+        ArrayList<Integer> dejaVu = new ArrayList<Integer>();
+        ArrayList<Integer> verif = new ArrayList<Integer>();
+        dejaVu.add(x);
+        for (int i = 0; i < pred(x).getCardinal(); i++) {
+            verif.add(pred(x).getValue(i));
+        }
+        while(verif.isEmpty())
+        {
+            if(!dejaVu.contains(verif.get(0)))
+            {
+                int mem = verif.size();
+                for (int i = 0; i < pred(verif.get(0)).getCardinal(); i++) {
+                    if(!dejaVu.contains(pred(verif.get(0)).getValue(i))){
+                        verif.add(pred(verif.get(0)).getValue(i));
+                    }
+                }
+                if(mem == verif.size()) desc.ajoutElt(verif.get(0));
+            }
+            dejaVu.add(verif.get(0));
+            verif.remove(verif.get(0));
+        }
+        return desc;
+    }
+
     //______________________________________________
 
     public static void main(String[] args) {
-
         int nb;
         double p;
         do {
@@ -721,15 +748,5 @@ public class RelationBinaire {
             nb = Ut.saisirEntier();
         }
         while (nb <= 0);
-
-
-        boolean[][] m1 = {
-                {true, true, false},
-                {false, true, true},
-                {false, false, true}
-        };
-        RelationBinaire r = new RelationBinaire(m1);
-        System.out.println(r.tabSucc);
-        System.out.println(r.ferTrans());
     }
 } // fin RelationBinaire
