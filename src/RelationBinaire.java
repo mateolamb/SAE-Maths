@@ -714,27 +714,20 @@ public class RelationBinaire {
     public EE descendant (int x)
     {
         EE desc = new EE(x);
-        ArrayList<Integer> dejaVu = new ArrayList<Integer>();
-        ArrayList<Integer> verif = new ArrayList<Integer>();
-        dejaVu.add(x);
+        ArrayList<Integer> predecesseur = new ArrayList<>();
         for (int i = 0; i < pred(x).getCardinal(); i++) {
-            verif.add(pred(x).getValue(i));
+            predecesseur.add(pred(x).getValue(i));
         }
-        while(verif.isEmpty())
+
+        while(!predecesseur.isEmpty())
         {
-            if(!dejaVu.contains(verif.get(0)))
-            {
-                int mem = verif.size();
-                for (int i = 0; i < pred(verif.get(0)).getCardinal(); i++) {
-                    if(!dejaVu.contains(pred(verif.get(0)).getValue(i))){
-                        verif.add(pred(verif.get(0)).getValue(i));
-                    }
-                }
-                if(mem == verif.size()) desc.ajoutElt(verif.get(0));
+            desc.ajoutElt(predecesseur.get(0));
+            for (int i = 0; i < pred(predecesseur.get(0)).getCardinal(); i++) {
+                if(!desc.contient(pred(predecesseur.get(0)).getValue(i)) && pred(predecesseur.get(0)).getValue(i) != x) desc.ajoutElt(pred(predecesseur.get(0)).getValue(i));
             }
-            dejaVu.add(verif.get(0));
-            verif.remove(verif.get(0));
+            predecesseur.remove(predecesseur.get(0));
         }
+
         return desc;
     }
 
