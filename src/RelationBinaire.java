@@ -726,6 +726,7 @@ public class RelationBinaire {
         System.out.println(str + "\n");
         System.out.println("Hasse\n" + this.hasse().toString() + "\n");
         System.out.println("Fermeture transitive\n" + this.ferTrans().toString());
+        System.out.println("Fermeture transitive avec boucle\n" + this.avecBoucles().ferTrans().toString());
     }
 
     public EE descendant(int x) {
