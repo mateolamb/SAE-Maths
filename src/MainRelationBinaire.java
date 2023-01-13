@@ -15,12 +15,19 @@ public class MainRelationBinaire {
     public static void main(String[] args)
     {
         boolean[][] m1= {
-                {true,true,false},
-                {false,true,true},
-                {false,false,true}
+                {true,true,true},
+                {true,true,true},
+                {false,true,true}
         };
+        boolean[][] m2= {
+                {true,true,true},
+                {true,true,true},
+                {true ,true,true}
+        };
+
         RelationBinaire r= new RelationBinaire(m1);
-        System.out.println(r.ferTrans());
+        RelationBinaire r2= new RelationBinaire(m2);
+        System.out.println(r.differenceBis(r2));
 
     }
 
