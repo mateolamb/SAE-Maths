@@ -620,7 +620,7 @@ public class RelationBinaire {
     public boolean estTransitive() {
         EE succ = new EE(this.n);
         EE succ2 = new EE(this.n);
-        for (int i = 0; i < tabSucc.length - 1; i++) {
+        for (int i = 0; i < tabSucc.length; i++) {
             succ = this.succ(i);
             for (int j = 0; j < succ.getCardinal(); j++) {
                 succ2 = this.succ(succ.getValue(j));
@@ -650,27 +650,26 @@ public class RelationBinaire {
      * pré-requis : aucun
      * résultat : la relation binaire associée au diagramme de Hasse de this
      */
+
     public RelationBinaire hasse() {
-        EE succ = new EE(this.n);
+        EE succ1 = new EE(this.n);
         EE succ2 = new EE(this.n);
         EE succ3 = new EE(n);
-        EE[] tab = new EE[this.n];
+        EE[] tab = new EE[n];
         for (int i = 0; i < tabSucc.length; i++) {
-            succ = this.succ(i);
+            succ1 = this.succ(i);
             succ3 = this.succ(i);
-            for (int j = 0; j < succ.getCardinal(); j++) {
-                if(succ.getValue(j)==i)continue;
-                succ2 = this.succ(succ.getValue(j));
-                for (int k = 0; k < succ2.getCardinal(); k++) {
-                    if (succ.contient(succ2.getValue(k))) {
-                        succ3.retraitElt(succ2.getValue(k));
-                    }
+            for (int j = 0; j < succ1.getCardinal(); j++) {
+                if (succ1.getValue(j) == i) continue;
+                succ2 = this.succ(succ1.getValue(j));
+                if (succ1.contient(succ2.getValue(j)) && j<succ2.getCardinal()) {
+                    succ3.retraitElt(succ2.getValue(j));
                 }
-
             }
-            tab[i] = new EE(succ3);
+            tab[i]= new EE(succ3);
         }
         return new RelationBinaire(tab);
+
     }
 
     //______________________________________________
@@ -856,7 +855,7 @@ public class RelationBinaire {
     }
 
     public boolean estTransitiveBis() {
-        RelationBinaire r = new RelationBinaire(produit(matAdj,matAdj));
+        RelationBinaire r = new RelationBinaire(produit(matAdj, matAdj));
         return r.estIncluseBis(this);
     }
 
