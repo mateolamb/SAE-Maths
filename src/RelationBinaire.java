@@ -653,19 +653,22 @@ public class RelationBinaire {
     public RelationBinaire hasse() {
         EE succ = new EE(this.n);
         EE succ2 = new EE(this.n);
+        EE succ3 = new EE(n);
         EE[] tab = new EE[this.n];
-        for (int i = 0; i < tabSucc.length - 1; i++) {
+        for (int i = 0; i < tabSucc.length; i++) {
             succ = this.succ(i);
+            succ3 = this.succ(i);
             for (int j = 0; j < succ.getCardinal(); j++) {
+                if(succ.getValue(j)==i)continue;
                 succ2 = this.succ(succ.getValue(j));
                 for (int k = 0; k < succ2.getCardinal(); k++) {
                     if (succ.contient(succ2.getValue(k))) {
-                        succ.retraitElt(succ2.getValue(k));
+                        succ3.retraitElt(succ2.getValue(k));
                     }
                 }
 
             }
-            tab[i] = new EE(succ);
+            tab[i] = new EE(succ3);
         }
         return new RelationBinaire(tab);
     }
@@ -822,13 +825,8 @@ public class RelationBinaire {
     }
 
     public EE predBis(int x) {
-        EE predecesseur = new EE(this.n);
-        for (int i = 0; i < this.tabSucc.length; i++) {
-            for (int j = 0; j < this.tabSucc[i].getCardinal(); j++) {
-                if (this.tabSucc[i].getValue(j) == x) predecesseur.ajoutElt(i);
-            }
-        }
-        return predecesseur;
+        RelationBinaire r = new RelationBinaire(transposee(this.matAdj));
+        return r.succ(x);
     }
 
     public boolean estReflexiveBis() {
@@ -858,20 +856,14 @@ public class RelationBinaire {
     }
 
     public boolean estTransitiveBis() {
-        return true;
+        RelationBinaire r = new RelationBinaire(produit(matAdj,matAdj));
+        return r.estIncluseBis(this);
     }
 
     public boolean estRelOrdreBis() {
         return (this.estReflexiveBis() && this.estAntisymetriqueBis() && this.estTransitiveBis());
     }
 
-    public RelationBinaire hasseBis() {
-        return new RelationBinaire(2);
-    }
-
-    public RelationBinaire ferTransBis() {
-        return new RelationBinaire(2);
-    }
 
     public void afficheDiversBis() {
         int[][] copie = new int[this.n][this.n];
@@ -884,9 +876,9 @@ public class RelationBinaire {
         if (estTransitiveBis()) str += "Transitive ";
         if (this.estRelOrdreBis()) str += "Relation d'ordre";
         System.out.println(str + "\n");
-        System.out.println("Hasse\n" + this.hasseBis().toString() + "\n");
-        System.out.println("Fermeture transitive\n" + this.ferTransBis().toString());
-        System.out.println("Fermeture transitive avec boucle\n" + this.avecBouclesBis().ferTransBis().toString());
+        System.out.println("Hasse\n" + this.hasse().toString() + "\n");
+        System.out.println("Fermeture transitive\n" + this.ferTrans().toString());
+        System.out.println("Fermeture transitive avec boucle\n" + this.avecBouclesBis().ferTrans().toString());
     }
 
 

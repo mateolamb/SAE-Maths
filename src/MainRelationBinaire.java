@@ -15,9 +15,9 @@ public class MainRelationBinaire {
     public static void main(String[] args)
     {
         boolean[][] m1= {
-                {false,true,false},
-                {true,true,true},
-                {false,false,false}
+                {true,true,false},
+                {false,true,true},
+                {false,false,true}
         };
         boolean[][] m2= {
                 {true,true,true},
@@ -28,7 +28,7 @@ public class MainRelationBinaire {
         RelationBinaire r= new RelationBinaire(m1);
         RelationBinaire r2= new RelationBinaire(m2);
         RelationBinaire r3= new RelationBinaire(4,true);
-        r.afficheDivers();
+        System.out.println(r.estTransitiveBis());
 
     }
 
