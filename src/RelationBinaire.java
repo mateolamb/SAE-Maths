@@ -1,3 +1,4 @@
+import javax.naming.NamingEnumeration;
 import java.lang.*;
 import java.util.ArrayList;
 
@@ -392,7 +393,7 @@ public class RelationBinaire {
     public RelationBinaire sansBoucles() {
         boolean[][] b = new boolean[matAdj.length][matAdj.length];
         for (int i = 0; i < matAdj.length; i++) {
-                b[i][i] = false;
+            b[i][i] = false;
         }
         return new RelationBinaire(b);
     }
@@ -408,7 +409,7 @@ public class RelationBinaire {
         EE[] b = tabSucc;
         for (int i = 0; i < tabSucc.length; i++) {
             for (int j = 0; j < tabSucc[i].getCardinal(); j++) {
-                if (!b[i].contient(r.tabSucc[i].getValue(j))){
+                if (!b[i].contient(r.tabSucc[i].getValue(j))) {
                     b[i].ajoutElt(r.tabSucc[i].getValue(j));
                 }
             }
@@ -427,7 +428,7 @@ public class RelationBinaire {
         EE[] b = tabSucc;
         for (int i = 0; i < tabSucc.length; i++) {
             for (int j = 0; j < tabSucc[i].getCardinal(); j++) {
-                if (!r.tabSucc[i].contient(b[i].getValue(j))){
+                if (!r.tabSucc[i].contient(b[i].getValue(j))) {
                     b[i].retraitElt(b[i].getValue(j));
                 }
             }
@@ -445,14 +446,14 @@ public class RelationBinaire {
     public RelationBinaire complementaire() {
         EE[] b = new EE[n];
         for (int i = 0; i < tabSucc.length; i++) {
-            b[i]=new EE(n);
+            b[i] = new EE(n);
             for (int j = 0; j < tabSucc.length; j++) {
                 b[i].ajoutElt(j);
             }
         }
         for (int i = 0; i < tabSucc.length; i++) {
             for (int j = 0; j < tabSucc[i].getCardinal(); j++) {
-                if(b[i].contient(tabSucc[i].getValue(j))){
+                if (b[i].contient(tabSucc[i].getValue(j))) {
                     b[i].retraitElt(tabSucc[i].getValue(j));
                 }
             }
@@ -468,7 +469,7 @@ public class RelationBinaire {
      * résultat : la différence de this et r
      */
     public RelationBinaire difference(RelationBinaire r) {
-        EE[] e =tabSucc;
+        EE[] e = tabSucc;
         for (int i = 0; i < tabSucc.length; i++) {
             for (int j = 0; j < r.tabSucc[i].getCardinal(); j++) {
                 if (e[i].contient(r.tabSucc[i].getValue(j))) {
@@ -505,7 +506,8 @@ public class RelationBinaire {
     public boolean estEgale(RelationBinaire r) {
         for (int i = 0; i < tabSucc.length; i++) {
             for (int j = 0; j < tabSucc[i].getCardinal(); j++) {
-                if (!r.tabSucc[i].contient(tabSucc[i].getValue(j)) && tabSucc[i].contient(r.tabSucc[i].getValue(j))) return false;
+                if (!r.tabSucc[i].contient(tabSucc[i].getValue(j)) && tabSucc[i].contient(r.tabSucc[i].getValue(j)))
+                    return false;
             }
         }
         return true;
@@ -778,14 +780,14 @@ public class RelationBinaire {
     }
 
     public RelationBinaire avecBouclesBis() {
-        RelationBinaire r = new RelationBinaire(n,true);
-        boolean[][] b = opBool(matAdj,r.matAdj,1);
+        RelationBinaire r = new RelationBinaire(n, true);
+        boolean[][] b = opBool(matAdj, r.matAdj, 1);
         return new RelationBinaire(b);
     }
 
     public RelationBinaire sansBouclesBis() {
-        RelationBinaire r = new RelationBinaire(n,true);
-        boolean[][] b = opBool(matAdj,r.complementaireBis().matAdj,2);
+        RelationBinaire r = new RelationBinaire(n, true);
+        boolean[][] b = opBool(matAdj, r.complementaireBis().matAdj, 2);
         return new RelationBinaire(b);
     }
 
@@ -799,25 +801,94 @@ public class RelationBinaire {
         boolean[][] b = opBool(matAdj, r.matAdj, 2);
         return new RelationBinaire(b);
     }
+
     public RelationBinaire complementaireBis() {
         boolean[][] b = opBool(matAdj, matAdj, 3);
         return new RelationBinaire(b);
     }
 
     public RelationBinaire differenceBis(RelationBinaire r) {
-        boolean[][] b = opBool(matAdj,r.complementaireBis().matAdj,2);
+        boolean[][] b = opBool(matAdj, r.complementaireBis().matAdj, 2);
         return new RelationBinaire(b);
     }
 
     public boolean estIncluseBis(RelationBinaire r) {
-        return true;
+        return differenceBis(r).estVideBis();
+
     }
 
     public boolean estEgaleBis(RelationBinaire r) {
-        RelationBinaire r2 = this.differenceBis(r);
-        if(r2.estVideBis()) return true;
-        return false;
+        return differenceBis(r).estVideBis() && r.differenceBis(this).estVideBis();
     }
+
+    public EE predBis(int x) {
+        EE predecesseur = new EE(this.n);
+        for (int i = 0; i < this.tabSucc.length; i++) {
+            for (int j = 0; j < this.tabSucc[i].getCardinal(); j++) {
+                if (this.tabSucc[i].getValue(j) == x) predecesseur.ajoutElt(i);
+            }
+        }
+        return predecesseur;
+    }
+
+    public boolean estReflexiveBis() {
+        RelationBinaire r = new RelationBinaire(n, true);
+        RelationBinaire r2 = new RelationBinaire(opBool(matAdj, r.complementaireBis().matAdj, 1));
+        return r2.estPleineBis();
+    }
+
+    public boolean estAntireflexiveBis() {
+        RelationBinaire r = new RelationBinaire(n, true);
+        RelationBinaire r2 = new RelationBinaire(opBool(matAdj, r.matAdj, 2));
+        return r2.estVideBis();
+    }
+
+    public boolean estSymetriqueBis() {
+        RelationBinaire r = new RelationBinaire(transposee(matAdj));
+        return differenceBis(r).estVideBis();
+    }
+
+    public boolean estAntisymetriqueBis() {
+        RelationBinaire r = new RelationBinaire(transposee(matAdj));
+        RelationBinaire r2 = new RelationBinaire(n, true);
+        RelationBinaire r3 = differenceBis(r);
+        RelationBinaire r4 = new RelationBinaire(opBool(matAdj, r2.matAdj, 2));
+        RelationBinaire r5 = new RelationBinaire(opBool(r3.matAdj, r4.matAdj, 1));
+        return r5.estEgaleBis(this);
+    }
+
+    public boolean estTransitiveBis() {
+        return true;
+    }
+
+    public boolean estRelOrdreBis() {
+        return (this.estReflexiveBis() && this.estAntisymetriqueBis() && this.estTransitiveBis());
+    }
+
+    public RelationBinaire hasseBis() {
+        return new RelationBinaire(2);
+    }
+
+    public RelationBinaire ferTransBis() {
+        return new RelationBinaire(2);
+    }
+
+    public void afficheDiversBis() {
+        int[][] copie = new int[this.n][this.n];
+        System.out.println(this.toString());
+        String str = "";
+        if (this.estAntireflexiveBis()) str += "Antireflexive ";
+        if (this.estReflexiveBis()) str += "Reflexive ";
+        if (this.estAntisymetriqueBis()) str += "Antisymetrique ";
+        if (this.estSymetriqueBis()) str += "Symetrique ";
+        if (estTransitiveBis()) str += "Transitive ";
+        if (this.estRelOrdreBis()) str += "Relation d'ordre";
+        System.out.println(str + "\n");
+        System.out.println("Hasse\n" + this.hasseBis().toString() + "\n");
+        System.out.println("Fermeture transitive\n" + this.ferTransBis().toString());
+        System.out.println("Fermeture transitive avec boucle\n" + this.avecBouclesBis().ferTransBis().toString());
+    }
+
 
     //______________________________________________
 

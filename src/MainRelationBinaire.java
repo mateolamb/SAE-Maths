@@ -15,9 +15,9 @@ public class MainRelationBinaire {
     public static void main(String[] args)
     {
         boolean[][] m1= {
+                {false,true,false},
                 {true,true,true},
-                {true,true,true},
-                {false,true,true}
+                {false,false,false}
         };
         boolean[][] m2= {
                 {true,true,true},
@@ -27,7 +27,8 @@ public class MainRelationBinaire {
 
         RelationBinaire r= new RelationBinaire(m1);
         RelationBinaire r2= new RelationBinaire(m2);
-        System.out.println(r.differenceBis(r2));
+        RelationBinaire r3= new RelationBinaire(4,true);
+        r.afficheDivers();
 
     }
 
